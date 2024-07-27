@@ -1,0 +1,40 @@
+# Example configuration file
+# Uploading this will erase your current configuration
+---
+version: "1.0"
+configuration:
+  backend:
+    - id: 00000000-0000-0000-0000-000000000001
+      name: Example backend
+      federated_servers:
+        - authorize_path: "/login"
+          base_url: "http://localhost:22080"
+          client_id: "boruta"
+          client_secret: "secret"
+          name: "opencred"
+          scope: "openid"
+          token_path: "/token"
+          userinfo_path: "/userinfo"
+  identity_provider:
+    - id: 00000000-0000-0000-0000-000000000001
+      name: Example identity provider
+      backend_id: 00000000-0000-0000-0000-000000000001
+      consentable: true
+      choose_session: true
+      registrable: true
+      templates:
+        - type: new_session
+          content: |
+            <a href="{{ federated_servers.opencred.login_url }}" class="ui large fluid button">Login with opencred</a>
+  client:
+    - id: 00000000-0000-0000-0000-000000000001
+      secret: secret
+      name: Example client
+      identity_provider:
+        id: 00000000-0000-0000-0000-000000000001
+      redirect_uris:
+        - http://redirect.uri.boruta
+  scope:
+    - name: BorutaCredentialSdJwt
+      label: boruta username
+      public: true
